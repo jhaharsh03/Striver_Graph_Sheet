@@ -1,0 +1,52 @@
+Link of the Q: https://practice.geeksforgeeks.org/problems/detect-cycle-in-an-undirected-graph/1
+
+
+...................................................................................
+
+
+//{ Driver Code Starts
+#include <bits/stdc++.h>
+using namespace std;
+
+
+class Solution {
+  public:
+    bool detect(vector<int> adj[], int vis[], int src){
+        vis[src] = 1; 
+        //pair in queue will help us to store node with its parents
+        queue<pair<int, int>> q; 
+        q.push({src, -1});
+        while(!q.empty()){
+            int node = q.front().first; 
+            int pre = q.front().second; 
+            q.pop();
+            for(auto t : adj[node]){
+                if(!vis[t]){
+                    vis[t] = 1; 
+                    q.push({t, node});
+                }
+                else if(t != pre){
+                    //if we alredy visited this code and the its not equal to parent then we 
+                    //detect a cycle
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    bool isCycle(int V, vector<int> adj[]) {
+      //Here i create a visited Array which Helps us to trace this node is visited or not
+        int vis[V] = {0};
+        for(int i = 0; i< V ; i++){
+            if(!vis[i]){
+                if(detect(adj , vis, i)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+};
+
+
+
