@@ -1,0 +1,44 @@
+Q Link: https://practice.geeksforgeeks.org/problems/eventual-safe-states/1
+
+...............................................................................................................................................
+
+vector<int> eventualSafeNodes(int V, vector<int> adj[]) {
+        // code here
+        vector<int> adjr[V];
+        for(int i = 0; i< V ; i++){
+            for(auto t : adj[i]){
+                adjr[t].push_back(i);
+            }
+        }
+        
+        int id[V] = {0};
+        
+        for(int i = 0; i< V ; i++){
+            for(auto t : adjr[i]){
+                id[t]++;
+            }
+        }
+        
+        queue<int> q; 
+        for(int i = 0; i< V; i++){
+            if(id[i] == 0){
+                q.push(i);
+            }
+        }
+        
+        vector<int> ans; 
+        
+        while(!q.empty()){
+            int node = q.front(); 
+            q.pop(); 
+            ans.push_back(node);
+            for(auto t : adjr[node]){
+                id[t]--;
+                if(id[t] == 0)q.push(t);
+            }
+        }
+        
+        sort(ans.begin(), ans.end());
+        return ans;
+    }
+};
